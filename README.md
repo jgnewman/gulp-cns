@@ -1,6 +1,6 @@
-# Give me a minute here, fellas. I'm in the process of adapting this from gulp-coffee.
-
 [![Build Status](https://secure.travis-ci.org/jgnewman/gulp-cns.png?branch=master)](https://travis-ci.org/jgnewman/gulp-cns)
+
+**gulp-cns is currently in alpha. Use at your own risk.**
 
 ## Information
 
@@ -25,7 +25,7 @@ var cream = require('gulp-cns');
 
 gulp.task('cream', function() {
   gulp.src('./src/*.cns')
-    .pipe(cream({bare: true}).on('error', gutil.log))
+    .pipe(cream().on('error', gutil.log))
     .pipe(gulp.dest('./public/'));
 });
 ```
@@ -37,7 +37,7 @@ gulp-cns will emit an error for cases such as invalid Cream & Sugar syntax. If u
 You will need to attach a listener (i.e. `.on('error')`) for the error event emitted by gulp-cns:
 
 ```javascript
-var cnsStream = cream({bare: true});
+var cnsStream = cream();
 
 // Attach listener
 cnsStream.on('error', function(err) {});
@@ -50,7 +50,7 @@ var gutil = require('gulp-util');
 
 // ...
 
-var cnsStream = cream({bare: true});
+var cnsStream = cream();
 
 // Attach listener
 cnsStream.on('error', gutil.log);
@@ -62,15 +62,13 @@ Since `.on(...)` returns `this`, you can compact it as inline code:
 ```javascript
 
 gulp.src('./src/*.cns')
-  .pipe(cream({bare: true}).on('error', gutil.log))
+  .pipe(cream().on('error', gutil.log))
   // ...
 ```
 
-## Options
-
-The options object supports the same options as the standard Cream & Sugar compiler
-
 ## Source maps
+
+> As of now, source maps are not supported. But we will be supporting them soon and when we do, they'll work like the following:
 
 gulp-cns can be used in tandem with [gulp-sourcemaps](https://github.com/floridoo/gulp-sourcemaps) to generate source maps for the CnS to javascript transition. You will need to initialize [gulp-sourcemaps](https://github.com/floridoo/gulp-sourcemaps) prior to running the gulp-cns compiler and write the source maps after.
 
@@ -93,7 +91,7 @@ var sourcemaps = require('gulp-sourcemaps');
 
 gulp.src('./src/*.cns')
   .pipe(sourcemaps.init())
-  .pipe(cream({ bare: true })).on('error', gutil.log)
+  .pipe(cream()).on('error', gutil.log)
   .pipe(sourcemaps.write('./maps'))
   .pipe(gulp.dest('./dest/js'));
 

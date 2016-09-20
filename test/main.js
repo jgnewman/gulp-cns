@@ -1,6 +1,6 @@
-var coffee = require('../');
+var cream = require('../');
 var should = require('should');
-var coffeescript = require('coffee-script');
+var cns = require('cream-and-sugar');
 var gutil = require('gulp-util');
 var fs = require('fs');
 var path = require('path');
@@ -18,8 +18,8 @@ var createFile = function (filepath, contents) {
   });
 };
 
-describe('gulp-coffee', function() {
-  describe('coffee()', function() {
+describe('gulp-cns', function() {
+  describe('cream()', function() {
     before(function() {
       this.testData = function (expected, newPath, done) {
         var newPaths = [newPath],
@@ -45,7 +45,7 @@ describe('gulp-coffee', function() {
           String(newFile.contents).should.equal(this.expected);
 
           if (expectedSourceMap) {
-            // check whether the sources from the coffee have been
+            // check whether the sources from the cns have been
             // applied to the files source map
             newFile.sourceMap.sources
               .should.containDeep(expectedSourceMap.sources);
@@ -59,24 +59,27 @@ describe('gulp-coffee', function() {
     });
 
     it('should concat two files', function(done) {
-      var filepath = '/home/contra/test/file.coffee';
+      var filepath = '/home/jgnewman/test/file.cns';
       var contents = new Buffer('a = 2');
-      var opts = {bare: true};
-      var expected = coffeescript.compile(String(contents), opts);
+      var expected;
 
-      coffee(opts)
+      cns.compileCode(String(contents), function (err, result) {
+        expected = result;
+      }, {finalize: true});
+
+      cream()
         .on('error', done)
-        .on('data', this.testData(expected, path.normalize('/home/contra/test/file.js'), done))
+        .on('data', this.testData(expected, path.normalize('/home/jgnewman/test/file.js'), done))
         .write(createFile(filepath, contents));
     });
 
     it('should emit errors correctly', function(done) {
-      var filepath = '/home/contra/test/file.coffee';
+      var filepath = '/home/jgnewman/test/file.cns';
       var contents = new Buffer('if a()\r\n  then huh');
 
-      coffee({bare: true})
+      cream()
         .on('error', function(err) {
-          err.message.should.equal('unexpected then');
+          err.message.slice(0, 11).should.equal('Parse error');
           done();
         })
         .on('data', function(newFile) {
@@ -85,169 +88,40 @@ describe('gulp-coffee', function() {
         .write(createFile(filepath, contents));
     });
 
-    it('should compile a file (no bare)', function(done) {
-      var filepath = 'test/fixtures/grammar.coffee';
+    it('should compile a file', function(done) {
+      var filepath = 'test/fixtures/sanitycheck.cns';
       var contents = new Buffer(fs.readFileSync(filepath));
-      var expected = coffeescript.compile(String(contents));
+      var expected;
 
-      coffee()
+      cns.compileCode(String(contents), function (err, result) {
+        expected = result;
+      }, {finalize: true});
+
+      cream()
         .on('error', done)
-        .on('data', this.testData(expected, path.normalize('test/fixtures/grammar.js'), done))
+        .on('data', this.testData(expected, path.normalize('test/fixtures/sanitycheck.js'), done))
         .write(createFile(filepath, contents));
     });
 
-    it('should compile a file (with bare)', function(done) {
-      var filepath = 'test/fixtures/grammar.coffee';
-      var contents = new Buffer(fs.readFileSync(filepath));
-      var opts = {bare: true};
-      var expected = coffeescript.compile(String(contents), opts);
+    // Gonna need this later when we have source maps.
 
-      coffee(opts)
-        .on('error', done)
-        .on('data', this.testData(expected, path.normalize('test/fixtures/grammar.js'), done))
-        .write(createFile(filepath, contents));
-    });
+    // it('should compile a file with source map', function(done) {
+    //   var filepath = 'test/fixtures/sanitycheck.cns';
+    //   var contents = new Buffer(fs.readFileSync(filepath));
+    //   var expected = cns.compileCode(String(contents), {
+    //     sourceMap: true,
+    //     sourceFiles: ['sanitycheck.cns'],
+    //     generatedFile: 'sanitycheck.js'
+    //   });
+    //
+    //
+    //   var stream = sourcemaps.init();
+    //   stream.write(createFile(filepath, contents));
+    //   stream
+    //     .pipe(cream())
+    //       .on('error', done)
+    //       .on('data', this.testData(expected, path.normalize('test/fixtures/sanitycheck.js'), done));
+    // });
 
-    it('should compile a file with source map', function(done) {
-      var filepath = 'test/fixtures/grammar.coffee';
-      var contents = new Buffer(fs.readFileSync(filepath));
-      var expected = coffeescript.compile(String(contents), {
-        sourceMap: true,
-        sourceFiles: ['grammar.coffee'],
-        generatedFile: 'grammar.js'
-      });
-
-
-      var stream = sourcemaps.init();
-      stream.write(createFile(filepath, contents));
-      stream
-        .pipe(coffee({}))
-          .on('error', done)
-          .on('data', this.testData(expected, path.normalize('test/fixtures/grammar.js'), done));
-    });
-
-    it('should compile a file with bare and with source map', function(done) {
-      var filepath = 'test/fixtures/grammar.coffee';
-      var contents = new Buffer(fs.readFileSync(filepath));
-      var expected = coffeescript.compile(String(contents), {
-        bare: true,
-        sourceMap: true,
-        sourceFiles: ['grammar.coffee'],
-        generatedFile: 'grammar.js'
-      });
-
-      var stream = sourcemaps.init();
-      stream.write(createFile(filepath, contents));
-      stream
-        .pipe(coffee({bare: true}))
-          .on('error', done)
-          .on('data', this.testData(expected, path.normalize('test/fixtures/grammar.js'), done));
-    });
-
-    it('should compile a file (no header)', function(done) {
-      var filepath = 'test/fixtures/grammar.coffee';
-      var contents = new Buffer(fs.readFileSync(filepath));
-      var expected = coffeescript.compile(String(contents), {header: false});
-
-      coffee()
-        .on('error', done)
-        .on('data', this.testData(expected, path.normalize('test/fixtures/grammar.js'), done))
-        .write(createFile(filepath, contents));
-    });
-
-    it('should compile a file (with header)', function(done) {
-      var filepath = 'test/fixtures/grammar.coffee';
-      var contents = new Buffer(fs.readFileSync(filepath));
-      var expected = coffeescript.compile(String(contents), {header: true});
-
-      coffee({header: true})
-        .on('error', done)
-        .on('data', this.testData(expected, path.normalize('test/fixtures/grammar.js'), done))
-        .write(createFile(filepath, contents));
-    });
-
-    it('should compile a literate file', function(done) {
-      var filepath = 'test/fixtures/journo.litcoffee';
-      var contents = new Buffer(fs.readFileSync(filepath));
-      var opts = {literate: true};
-      var expected = coffeescript.compile(String(contents), opts);
-
-      coffee(opts)
-        .on('error', done)
-        .on('data', this.testData(expected, path.normalize('test/fixtures/journo.js'), done))
-        .write(createFile(filepath, contents));
-    });
-
-    it('should compile a literate file (implicit)', function(done) {
-      var filepath = 'test/fixtures/journo.litcoffee';
-      var contents = new Buffer(fs.readFileSync(filepath));
-      var expected = coffeescript.compile(String(contents), {literate: true});
-
-      coffee()
-        .on('error', done)
-        .on('data', this.testData(expected, path.normalize('test/fixtures/journo.js'), done))
-        .write(createFile(filepath, contents));
-    });
-
-    it('should compile a literate file (with bare)', function(done) {
-      var filepath = 'test/fixtures/journo.litcoffee';
-      var contents = new Buffer(fs.readFileSync(filepath));
-      var opts = {literate: true, bare: true};
-      var expected = coffeescript.compile(String(contents), opts);
-
-      coffee(opts)
-        .on('error', done)
-        .on('data', this.testData(expected, path.normalize('test/fixtures/journo.js'), done))
-        .write(createFile(filepath, contents));
-    });
-
-    it('should compile a literate file with source map', function(done) {
-      var filepath = 'test/fixtures/journo.litcoffee';
-      var contents = new Buffer(fs.readFileSync(filepath));
-      var expected = coffeescript.compile(String(contents), {
-        literate: true,
-        sourceMap: true,
-        sourceFiles: ['journo.litcoffee'],
-        generatedFile: 'journo.js'
-      });
-
-      var stream = sourcemaps.init();
-      stream.write(createFile(filepath, contents));
-      stream
-        .pipe(coffee({literate: true}))
-          .on('error', done)
-          .on('data', this.testData(expected, path.normalize('test/fixtures/journo.js'), done));
-    });
-
-    it('should compile a literate file with bare and with source map', function(done) {
-      var filepath = 'test/fixtures/journo.litcoffee';
-      var contents = new Buffer(fs.readFileSync(filepath));
-      var expected = coffeescript.compile(String(contents), {
-        literate: true,
-        bare: true,
-        sourceMap: true,
-        sourceFiles: ['journo.litcoffee'],
-        generatedFile: 'journo.js'
-      });
-
-      var stream = sourcemaps.init();
-      stream.write(createFile(filepath, contents));
-      stream
-        .pipe(coffee({literate: true, bare: true}))
-          .on('error', done)
-          .on('data', this.testData(expected, path.normalize('test/fixtures/journo.js'), done));
-    });
-
-    it('should rename a literate markdown file', function(done) {
-      var filepath = 'test/fixtures/journo.coffee.md';
-      var contents = new Buffer(fs.readFileSync(filepath));
-      var opts = {literate: true};
-      var expected = coffeescript.compile(String(contents), opts);
-
-      coffee(opts)
-        .on('error', done)
-        .on('data', this.testData(expected, path.normalize('test/fixtures/journo.js'), done))
-        .write(createFile(filepath, contents));
-    });
   });
 });
