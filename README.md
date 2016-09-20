@@ -6,11 +6,11 @@
 
 <table>
 <tr>
-<td>Package</td><td>gulp-coffee</td>
+<td>Package</td><td>gulp-cns</td>
 </tr>
 <tr>
 <td>Description</td>
-<td>Compiles CoffeeScript</td>
+<td>Compiles Cream & Sugar</td>
 </tr>
 <tr>
 <td>Node Version</td>
@@ -21,26 +21,26 @@
 ## Usage
 
 ```javascript
-var coffee = require('gulp-coffee');
+var cream = require('gulp-cns');
 
-gulp.task('coffee', function() {
-  gulp.src('./src/*.coffee')
-    .pipe(coffee({bare: true}).on('error', gutil.log))
+gulp.task('cream', function() {
+  gulp.src('./src/*.cns')
+    .pipe(cream({bare: true}).on('error', gutil.log))
     .pipe(gulp.dest('./public/'));
 });
 ```
 
 ### Error handling
 
-gulp-coffee will emit an error for cases such as invalid coffeescript syntax. If uncaught, the error will crash gulp.
+gulp-cns will emit an error for cases such as invalid Cream & Sugar syntax. If uncaught, the error will crash gulp.
 
-You will need to attach a listener (i.e. `.on('error')`) for the error event emitted by gulp-coffee:
+You will need to attach a listener (i.e. `.on('error')`) for the error event emitted by gulp-cns:
 
 ```javascript
-var coffeeStream = coffee({bare: true});
+var cnsStream = cream({bare: true});
 
 // Attach listener
-coffeeStream.on('error', function(err) {});
+cnsStream.on('error', function(err) {});
 ```
 
 In addition, you may utilize [gulp-util](https://github.com/wearefractal/gulp-util)'s logging function:
@@ -50,10 +50,10 @@ var gutil = require('gulp-util');
 
 // ...
 
-var coffeeStream = coffee({bare: true});
+var cnsStream = cream({bare: true});
 
 // Attach listener
-coffeeStream.on('error', gutil.log);
+cnsStream.on('error', gutil.log);
 
 ```
 
@@ -61,25 +61,25 @@ Since `.on(...)` returns `this`, you can compact it as inline code:
 
 ```javascript
 
-gulp.src('./src/*.coffee')
-  .pipe(coffee({bare: true}).on('error', gutil.log))
+gulp.src('./src/*.cns')
+  .pipe(cream({bare: true}).on('error', gutil.log))
   // ...
 ```
 
 ## Options
 
-The options object supports the same options as the standard CoffeeScript compiler
+The options object supports the same options as the standard Cream & Sugar compiler
 
 ## Source maps
 
-gulp-coffee can be used in tandem with [gulp-sourcemaps](https://github.com/floridoo/gulp-sourcemaps) to generate source maps for the coffee to javascript transition. You will need to initialize [gulp-sourcemaps](https://github.com/floridoo/gulp-sourcemaps) prior to running the gulp-coffee compiler and write the source maps after.
+gulp-cns can be used in tandem with [gulp-sourcemaps](https://github.com/floridoo/gulp-sourcemaps) to generate source maps for the CnS to javascript transition. You will need to initialize [gulp-sourcemaps](https://github.com/floridoo/gulp-sourcemaps) prior to running the gulp-cns compiler and write the source maps after.
 
 ```javascript
 var sourcemaps = require('gulp-sourcemaps');
 
-gulp.src('./src/*.coffee')
+gulp.src('./src/*.cns')
   .pipe(sourcemaps.init())
-  .pipe(coffee())
+  .pipe(cream())
   .pipe(sourcemaps.write())
   .pipe(gulp.dest('./dest/js'));
 
@@ -91,9 +91,9 @@ By default, [gulp-sourcemaps](https://github.com/floridoo/gulp-sourcemaps) write
 ```javascript
 var sourcemaps = require('gulp-sourcemaps');
 
-gulp.src('./src/*.coffee')
+gulp.src('./src/*.cns')
   .pipe(sourcemaps.init())
-  .pipe(coffee({ bare: true })).on('error', gutil.log)
+  .pipe(cream({ bare: true })).on('error', gutil.log)
   .pipe(sourcemaps.write('./maps'))
   .pipe(gulp.dest('./dest/js'));
 
