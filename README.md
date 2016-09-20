@@ -1,6 +1,6 @@
 # Give me a minute here, fellas. I'm in the process of adapting this from gulp-coffee.
 
-[![Build Status](https://secure.travis-ci.org/contra/gulp-coffee.png?branch=master)](https://travis-ci.org/contra/gulp-coffee)
+[![Build Status](https://secure.travis-ci.org/jgnewman/gulp-cns.png?branch=master)](https://travis-ci.org/jgnewman/gulp-cns)
 
 ## Information
 
