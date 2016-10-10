@@ -10,7 +10,7 @@
     "gulpplugin"
   ],
   "dependencies": {
-    "cream-and-sugar": "0.0.4-alpha2",
+    "cream-and-sugar": "0.0.4-alpha3",
     "gulp-util": "^3.0.2",
     "merge": "^1.2.0",
     "through2": "^0.6.3",
