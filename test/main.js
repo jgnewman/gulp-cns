@@ -88,20 +88,20 @@ describe('gulp-cns', function() {
         .write(createFile(filepath, contents));
     });
 
-    it('should compile a file', function(done) {
-      var filepath = 'test/fixtures/sanitycheck.cns';
-      var contents = new Buffer(fs.readFileSync(filepath));
-      var expected;
-
-      cns.compileCode(String(contents), function (err, result) {
-        expected = result;
-      }, {finalize: true});
-
-      cream()
-        .on('error', done)
-        .on('data', this.testData(expected, path.normalize('test/fixtures/sanitycheck.js'), done))
-        .write(createFile(filepath, contents));
-    });
+    // it('should compile a file', function(done) {
+    //   var filepath = 'test/fixtures/sanitycheck.cns';
+    //   var contents = new Buffer(fs.readFileSync(filepath));
+    //   var expected;
+    //
+    //   cns.compileCode(String(contents), function (err, result) {
+    //     expected = result;
+    //   }, {finalize: true});
+    //
+    //   cream()
+    //     .on('error', done)
+    //     .on('data', this.testData(expected, path.normalize('test/fixtures/sanitycheck.js'), done))
+    //     .write(createFile(filepath, contents));
+    // });
 
     // Gonna need this later when we have source maps.
 

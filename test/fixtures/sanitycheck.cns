@@ -1,202 +1,134 @@
-[]
+
+[1, 2, 3]
 [
+  1, 2, 3
+]
+[
+  1,
+  2,
+  3
+]
+[
+1,
+2,
+3
+]
+[
+
   1, 2, 3]
-import {a, b, c} from 'farts'
-import {a, b, c
-} from 'farts'
-import {
-  a, b, c} from 'farts'
-import {
-  a, b, c
-  } from 'farts'
-import {
-  a,
-  b, c
-} from 'farts'
-import {a,
-b, c} from 'farts'
+[1, 2, 3
 
-export { a/2 }
-export { a/1, b/2, c/3 }
-export {a/1, b/2, c/3
-}
-export {
-  a/1, b/2, c/3}
-export {
-  a/1, b/2, c/3
-}
-export {
-  a/1,
-  b/2, c/3
-}
-export {a/1,
-b/2, c/3}
-export {
-  a/1,
-  b/2,
-  c/3
-}
+]
+[
+  (foo bar),
+  2 + 2,
+  3,
+  foo.bar,
+  [4, 5, 6],
+  {a: foo, b: bar}
+]
 
-{a, b, c} = props
-{a, b, c
-} = props
-{
-  a, b, c} = props
-{
-  a, b, c
-} = props
-{
-  a,
-  b, c
-} = props
-{a,
-b, c} = props
+x = foo
+{ x, y } = foo
+[x|y] = foo
+[x||y] = foo
+{ keyx: x, keyy: y } = foo
+[ x, y ] = foo
 
-(2 + 2)
+ATOM
 
-3 + 3
+'string'
+"string"
+`string`
 
-myfun(hola)
-myfun hola
-myfun 2 + 2, hello, 'fart'
-myfun(2 + 2, hello, 'fart')
+/regext/gim
 
-def
-  factorial 0 -> 1
-  factorial n -> n * factorial n - 1
-end
+true
+false
+null
+undefined
 
-def
-  factorial(0) -> 1
-  factorial(n) -> n * factorial(n - 1)
-end
+{{ x, y, z }}
 
-<div className={ 2 + 2 } farts="sharts"></div>
+1 >> [2, 3, 4]
+[1, 2, 3] << 4
 
-{}
-{a:foo(a)}
-{a: true}
-{
-  a: true
-}
-{a: true, b: 2 + 2, c: value}
-{a: true, 'b': true, 0: true, ~atom: true}
-{
-  a: true, 'b': true, 0: true, ~atom: true}
-{a: true, 'b': true, 0: true, ~atom: true
-}
-{a: true,
-'b': true, 0: true, ~atom: true}
-{
-  a: true, # comment is successfully ignored
-  'b': true,
-  0: true,
-  ~atom: true
-}
+# This is a comment
 
-~atom
-@whatever
+foo _
+foo x
+foo x, y
+foo x, bar y
+@foo.bar.baz quux
 
-match
-  (0, 1) -> 1
-  x, y -> n * factorial n - 1
-end
+for x, y in list do x + y
+for x, y in list do x + y onlyif x % 2 == 0
 
-a is 4 and b is 4
+when
+  something -> dosomething _
+  true      -> doesomethingelse _
 
-cond
-  a is 4 and b is 4 -> doStuff()
-end
-
-# Parens are necessary here becaue the idea is to show what
-# the pattern for calling the function looks like. If you don't
-# specify a parameter list at all, that's not a pattern for calling
-# a function.
-myfun() ->
-  doStuff()
-  a is 4 and b is 4
-end
-
-def
-  foo [hd|tl] ->
-    {a, b, c} = something
-    foo doStuff(hd), tl
-  end
-  foo item, [] -> item
-  foo item, list ->
-    doStuff()
-    doMoreStuff()
-  end
-end
-
-ReactDOM.render(
-  React.createElement('h1', {}, ['Hello, world!']),
-  document.getElementById('app')
-)
-
-def
-  factorial 0 -> 1
-  factorial n when n lte 2 -> 1
-  factorial n -> n * factorial n - 1
-end
-
-factorial = match
-  n when n lte 1 -> 1
-  n -> n * factorial n - 1
-end
-
-def
-  foo x -> x
-  foo [1, x, 2] -> x
-end
-
-'
-single quote
-'
-'
-single\nquote
-'
-"
-double quote
-"
-`
-back tick
-`
-
-# single line comment
-
-###
-multi-line Comments
-are
-really cool
-###
-
-[1|[2, 3, 4]]
-[[1, 2, 3]||4]
-
-def
-  foo [ld || lst] ->
-    doStuff ld, lst
-  end
-end
-
-do fn -> 2 + 2
+if x == y then dosomething _
+if x == y then dosomething _ else dosomethingelse _
 
 try
-  doStuff()
-catch err:
-  moreStuff()
-end
+  something _
+catch err
+  somethingelse err
 
-myVar = doStuff(err) incase otherStuff() throws err
+incase dosomething _ throws err do somethingelse err
 
-[1, 2, 3].forEach(fn -> end)
+caseof foo
+  'hello' -> dosomething _
+  'goodbye' -> somethingelse _
+  default -> thirdthing _
 
-num + num for num, index in [1, 2, 3] when index rm 2 is 0
+<div className={foo} dataSomething="bar">
+  'hello'
+  <span></span>
+</div>
 
-elem 'foo', {foo: 'bar'}
+import x from y
+import { x, y } from z
+import [ x, y ] from z
+import { xkey: x, ykey: y } from z
+import {{ x, y }} from z
 
-myfun = match
-  [~factorial, num] -> reply [~ok, factorial num]
-  _ -> reply [~err, 'Unknown command received']
-end
+export aritize foo, 1
+
+export {
+  foo: foo,
+  bar: bar, # random comment here
+  BAZ: baz
+}
+
+2 + 2
+2 - 2
+2 * 2
+2 / 2
+2 % 2
+
+!foo
+
+foo >>= bar >>= baz x
+
+# Create a function we can use to spin up a new process.
+up _ =>
+
+  # Create and return a new process from a function.
+  spawn fn =>
+
+    # When we receive a message, pattern match it to figure out what to do.
+    receive match
+
+      # If the message is an array beginning with the atom ~factorial, we'll
+      # calculate the factorial of num and send it back marked as ~ok.
+      {{ FACTORIAL, num }} => reply {{ OK, factorial num }}
+
+      # If the message is anything else, send a reply marked as `ERR` and
+      # pass along a reason.
+      _ => reply {{ ERR, 'Unknown command received' }}
+
+    # Define the factorial function so that we can actually calculate them.
+    factorial 0 => 1
+    factorial n => n * factorial n - 1
