@@ -1,7 +1,7 @@
 {
   "name": "gulp-cns",
   "description": "Compile Cream & Sugar files",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "homepage": "http://github.com/jgnewman/gulp-cns",
   "repository": "git://github.com/jgnewman/gulp-cns.git",
   "author": "John Newman",
@@ -10,7 +10,7 @@
     "gulpplugin"
   ],
   "dependencies": {
-    "cream-and-sugar": "0.4.1",
+    "cream-and-sugar": "0.5.0",
     "gulp-util": "^3.0.2",
     "merge": "^1.2.0",
     "through2": "^0.6.3",
